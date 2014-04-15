@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+<extension
+         id="codePickerProposalComputer"
+         point="org.eclipse.jdt.ui.javaCompletionProposalComputer">
+      <javaCompletionProposalComputer
+            activate="true"
+            class="narainthots.codePickerPlugin.CodePickerProposalComputer">
+      <partition type="__java_singleline_comment"/>
+      </javaCompletionProposalComputer>
+      
+   </extension>
+
+
+</plugin>

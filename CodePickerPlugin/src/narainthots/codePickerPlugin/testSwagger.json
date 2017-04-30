@@ -1,0 +1,556 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "The Loyalty API supports the management of loyalty program specifications, loyalty program members, their associated products and loyalty accounts with loyalty balances. The scope of the API also covers the management of loyalty rules and under what conditions the associated loyalty actions must be applied.",
+    "version": "0.0.a",
+    "title": "API Loyalty"
+  },
+  "basePath": "/DSLoyalty/api/loyaltyManagement/v00a",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/loyaltyProductProgramSpec": {
+      "get": {
+        "tags": [
+          "loyaltyProductProgramSpec"
+        ],
+        "operationId": "loyaltyProductProgramSpecFind",
+        "summary": "loyaltyProductProgramSpecFind",
+        "description": "",
+        "deprecated": false,
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of LoyaltyProductProgramSpec",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/LoyaltyProductProgramSpec"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "loyaltyProductProgramSpec"
+        ],
+        "operationId": "loyaltyProductProgramSpecCreate",
+        "summary": "loyaltyProductProgramSpecCreate",
+        "description": "",
+        "deprecated": false,
+        "parameters": [
+          {
+            "name": "loyaltyProductProgramSpec",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoyaltyProductProgramSpec"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "LoyaltyProductProgramSpec",
+            "schema": {
+              "$ref": "#/definitions/LoyaltyProductProgramSpec"
+            }
+          }
+        }
+      }
+    },
+    "/loyaltyProductProgramSpec/{loyaltyProductProgramSpecId}": {
+      "get": {
+        "tags": [
+          "loyaltyProductProgramSpec"
+        ],
+        "operationId": "loyaltyProductProgramSpecGet",
+        "summary": "loyaltyProductProgramSpecGet",
+        "description": "",
+        "deprecated": false,
+        "parameters": [
+          {
+            "name": "loyaltyProductProgramSpecId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "LoyaltyProductProgramSpec",
+            "schema": {
+              "$ref": "#/definitions/LoyaltyProductProgramSpec"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "LoyaltyProductProgramSpec": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the product specification.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the product specification.",
+          "type": "string"
+        },
+        "description": {
+          "description": "A narrative that explains in detail what the product specification is.",
+          "type": "string"
+        },
+        "productNumber": {
+          "description": "An identification number assigned to uniquely identify the specification.",
+          "type": "string"
+        },
+        "brand": {
+          "description": "The manufacturer or trademark of the specification.",
+          "type": "string"
+        },
+        "needsLoyaltyAccount": {
+          "description": "If TRUE, a LoyaltyAccount is needed for each LoyaltyProgramProduct created according to the LoyaltyProgramProductSpec.",
+          "type": "boolean"
+        },
+        "validFor": {
+          "$ref": "#/definitions/ValidFor"
+        },
+        "lifeCycleStatus": {
+          "description": "The condition of the product specification, such as active, inactive, planned.",
+          "type": "string",
+          "enum": [
+            "Active",
+            "InActive",
+            "Planned"
+          ]
+        },
+        "loyaltyRule": {
+          "$ref": "#/definitions/LoyaltyRule"
+        },
+        "href": {
+          "description": "A reference to the product specification.",
+          "type": "string"
+        }
+      }
+    },
+    "ValidFor": {
+      "description": "The period for which the product specification is valid.",
+      "type": "object",
+      "properties": {
+        "startDateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endDateTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "LoyaltyRule": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the loyalty rule.",
+          "type": "string"
+        },
+        "isCNF": {
+          "description": "This is a Boolean attribute that, if TRUE, defines the condition clause of this rule to be represented in Conjunctive Normal Form (e.g., an AND of ORs). If the value of this attribute is FALSE, then the condition clause will be represented in Disjunctive Normal Form (e.g., an OR of ANDs).",
+          "type": "boolean"
+        },
+        "hasSubRules": {
+          "description": "A Boolean attribute that signifies whether this loyalty rule has one or more sub-rules. Sub-rules are used to enforce a hierarchical nesting of rules, so that parent rules may control the execution and other semantics of sub-rules that they contain.",
+          "type": "boolean"
+        },
+        "isMandatoryEvaluation": {
+          "description": "A Boolean attribute that, if TRUE, signifies that evaluation (and possibly action execution) of this entity is mandatory and must be attempted. If the Mandatory property value of this entity is FALSE, then the evaluation of this entity is considered to be \"best effort\" and may be ignored.",
+          "type": "boolean"
+        },
+        "usage": {
+          "description": "A free-form string attribute that recommends how this policy object should be used.",
+          "type": "string"
+        },
+        "keywords": {
+          "description": "A string attribute that defines a set of one or more keywords that a policy administrator may use to assist in characterizing or categorizing a policy object to facilitate search operations.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "policyName": {
+          "description": "A generic naming attribute that can be used to identify different policy entities.",
+          "type": "string"
+        },
+        "commonName": {
+          "description": "A user-friendly identifier of the loyalty rule.",
+          "type": "string"
+        },
+        "description": {
+          "description": "A free-form description of the rule.",
+          "type": "string"
+        },
+        "href": {
+          "description": "A reference to the loyalty rule.",
+          "type": "string"
+        },
+        "loyaltyEventType": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LoyaltyEventType"
+          }
+        },
+        "loyaltyCondition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LoyaltyCondition"
+          }
+        },
+        "loyaltyAction": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LoyaltyAction"
+          }
+        }
+      }
+    },
+    "LoyaltyCondition": {
+      "description": "A LoyaltyCondition specifies the condition that has to be evaluated to decide if the LoyaltyAction(s) from the LoyaltyRule have to be performed.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the loyalty condition.",
+          "type": "string"
+        },
+        "attribute": {
+          "description": "Attribute to evaluate.",
+          "type": "string"
+        },
+        "operator": {
+          "description": "Comparison operator to be used in the evaluation.",
+          "type": "string"
+        },
+        "value": {
+          "description": "The value of the attribute to be evaluated.",
+          "type": "string"
+        },
+        "href": {
+          "description": "Reference to the loyalty condition.",
+          "type": "string"
+        }
+      }
+    },
+    "LoyaltyAction": {
+      "description": "A LoyaltyAction is an action that needs to be performed if the loyalty rule’s condition clause evaluates to TRUE. A LoyaltyAction may correspond either to a CustomerOrder (for example 100 SMS free), or to a BusinessInteraction (for example an SMS notifying the 100 SMS free) or to a LoyaltyEarn (for example 100 points on the LoyaltyAccount). A LoyaltyAction describes a LoyaltyExecutionPoint. A LoyaltyExecutionPoint is a type of PolicyExecutionPoint. A LoyaltyExecutionPoint tracks the application of a LoyaltyAction and may trigger BusinessInteraction, CustomerOrder or LoyaltyEarn, depending on the type of the LoyaltyAction it belongs to.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the loyalty action.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The type of loyalty action (LoyaltyEarn, CustomerOrder or BusinessInteraction).",
+          "type": "string",
+          "enum": [
+            "LoyaltyEarn",
+            "CustomerOrder",
+            "BusinessInteraction"
+          ]
+        },
+        "actionAttributes": {
+          "description": "Additional attributes required to perform the action. These attributes will depend on the type of the loyalty action. For example, if it is a LoyaltyEarn action, there will be a “quantity” attribute value pair indicating how many points should be earned.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "href": {
+          "description": "A reference to the loyalty action.",
+          "type": "string"
+        },
+        "loyaltyExecutionPoint": {
+          "$ref": "#/definitions/LoyaltyExecutionPoint"
+        }
+      }
+    },
+    "LoyaltyExecutionPoint": {
+      "description": "A LoyaltyExecutionPoint is a type of PolicyExecutionPoint. A LoyaltyExecutionPoint tracks the application of a LoyaltyAction and may trigger BusinessInteraction, CustomerOrder or LoyaltyEarn, depending on the type of the LoyaltyAction it belongs to.",
+      "type": "object",
+      "properties": {
+        "version": {
+          "description": "A string that identifies the version of the loyalty execution point.",
+          "type": "string"
+        },
+        "commonName": {
+          "description": "A user-friendly identifier of the loyalty execution point.",
+          "type": "string"
+        },
+        "description": {
+          "description": "A free-form description of the loyalty execution point.",
+          "type": "string"
+        },
+        "action": {
+          "description": "The HTTP operation to be used when calling the endpoint (POST, PUT, GET or DELETE )",
+          "type": "string"
+        },
+        "endpoint": {
+          "description": "The endpoint to call to trigger a BusinessInteraction, CustomerOrder or LoyaltyEarn.",
+          "type": "string"
+        }
+      }
+    },
+    "LoyaltyEventType": {
+      "description": "A LoyaltyEventType is a qualifier specifying which incoming event types are associated with which LoyaltyRules.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the loyalty event type.",
+          "type": "string"
+        },
+        "eventType": {
+          "description": "The type of loyalty event expected to trigger the loyalty rule evaluation, e.g. a CustomerOrder or an Invoice.",
+          "type": "string"
+        }
+      }
+    },
+    "LoyaltyProgramProduct": {
+      "description": "A LoyaltyProgramProduct is described by a LoyaltyProgramProductSpec and represents an instance of the LoyaltyProgramProductSpec for a specific LoyaltyProgramMember.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the loyalty program product.",
+          "type": "string"
+        },
+        "name": {
+          "description": "A word, term, or phrase by which the product is known and distinguished from other products.",
+          "type": "string"
+        },
+        "description": {
+          "description": "An explanation of what the product is.",
+          "type": "string"
+        },
+        "productStatus": {
+          "description": "The condition of the product, such as planned, designed, activated, disconnected.",
+          "type": "string",
+          "enum": [
+            "planned",
+            "designed",
+            "activated",
+            "disconnected"
+          ]
+        },
+        "productSerialNumber": {
+          "description": "A set of identifying characters and/or numbers assigned to, and usually marked on, each of a series of identical products.",
+          "type": "string"
+        },
+        "validFor": {
+          "$ref": "#/definitions/ValidFor"
+        },
+        "loyaltyProgramProductSpec": {
+          "$ref": "#/definitions/LoyaltyProductProgramSpec"
+        },
+        "loyaltyAccount": {
+          "$ref": "#/definitions/LoyaltyAccount"
+        },
+        "href": {
+          "description": "A reference to the loyalty program product.",
+          "type": "string"
+        }
+      }
+    },
+    "LoyaltyProgramMember": {
+      "description": "A LoyaltyProgramMember is a type of PartyRole with rights to a LoyaltyAccount by means of a LoyaltyProgramProduct. The loyalty program member may earn or burn loyalty through the LoyaltyEarn and LoyaltyBurn actions.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the loyalty program member.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The loyalty member’s name.",
+          "type": "string"
+        },
+        "status": {
+          "description": "A free-form field in which the member’s status may be captured, e.g. “active”, “suspended”, .etc.",
+          "type": "string"
+        },
+        "validFor": {
+          "$ref": "#/definitions/ValidFor"
+        },
+        "loyaltyAccount": {
+          "$ref": "#/definitions/LoyaltyAccount"
+        },
+        "loyaltyProgramProduct": {
+          "$ref": "#/definitions/LoyaltyProgramProduct"
+        },
+        "href": {
+          "description": "A reference to the loyalty program member.",
+          "type": "string"
+        }
+      }
+    },
+    "LoyaltyAccount": {
+      "description": "A LoyaltyAccount corresponds to a set of balances to carry loyalty movement according to different valid period and unit.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the loyalty account.",
+          "type": "string"
+        },
+        "loyaltyProgramProduct": {
+          "$ref": "#/definitions/LoyaltyProgramProduct"
+        },
+        "href": {
+          "description": "A reference to the loyalty member’s loyalty account.",
+          "type": "string"
+        }
+      }
+    },
+    "LoyaltyBalance": {
+      "description": "A LoyaltyBalance is credited by LoyaltyEarn transactions and debited by LoyaltyBurn transactions. A LoyaltyBalance belongs to a LoyaltyAccount.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the loyalty balance.",
+          "type": "string"
+        },
+        "unit": {
+          "description": "Unit of the quantity credited and debited from the balance.",
+          "type": "string"
+        },
+        "balance": {
+          "description": "The current balance of the loyalty balance account.",
+          "type": "integer"
+        },
+        "validFor": {
+          "$ref": "#/definitions/ValidFor"
+        },
+        "href": {
+          "description": "A reference to the loyalty member’s loyalty balance.",
+          "type": "string"
+        },
+        "loyaltyEarn": {
+          "description": "A collection of loyalty earned transactions on the balance account.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LoyaltyEarn"
+          }
+        },
+        "loyaltyBurn": {
+          "description": "A collection of loyalty burned transactions on the balance account.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LoyaltyBurn"
+          }
+        }
+      }
+    },
+    "LoyaltyEarn": {
+      "description": "The LoyaltyEarn resource credits the associated LoyaltyEarn.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the loyalty earn transaction.",
+          "type": "string"
+        },
+        "href": {
+          "description": "A reference to the loyalty earn transaction.",
+          "type": "string"
+        },
+        "quantity": {
+          "description": "The amount of loyalty units earned.",
+          "type": "integer"
+        },
+        "openingBalance": {
+          "description": "The opening quantity on the account balance, before the loyalty units were earned.",
+          "type": "integer"
+        },
+        "closingBalance": {
+          "description": "The closing quantity on the account balance, after the loyalty units were earned.",
+          "type": "integer"
+        },
+        "dateTime": {
+          "description": "The date time on which the loyalty earn transaction occurred.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "description": "A free-form description describing the loyalty earn event.",
+          "type": "string"
+        }
+      }
+    },
+    "LoyaltyBurn": {
+      "description": "The LoyaltyBurn resource debits the associated LoyaltyBurn.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the loyalty burn transaction.",
+          "type": "string"
+        },
+        "href": {
+          "description": "A reference to the loyalty burn transaction.",
+          "type": "string"
+        },
+        "quantity": {
+          "description": "The amount of loyalty units burned.",
+          "type": "integer"
+        },
+        "openingBalance": {
+          "description": "The opening quantity on the account balance, before the loyalty units were burned.",
+          "type": "integer"
+        },
+        "closingBalance": {
+          "description": "The closing quantity on the account balance, after the loyalty units were burned.",
+          "type": "integer"
+        },
+        "dateTime": {
+          "description": "The date time on which the loyalty burn transaction occurred.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "description": "A free-form description describing the loyalty burn event.",
+          "type": "string"
+        }
+      }
+    },
+    "LoyaltyEvent": {
+      "description": "The LoyaltyEvent resource triggers the evaluation of a LoyaltyRule. Only LoyaltyRules with LoyaltyEventTypes matching the incoming event type is evaluated.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the loyalty event.",
+          "type": "string"
+        },
+        "eventType": {
+          "$ref": "#/definitions/LoyaltyEventType"
+        }
+      }
+    }
+  }
+}

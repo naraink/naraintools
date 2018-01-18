@@ -1,3 +1,56 @@
+CONTAINS SERVERAL SAMPLE PROJECTS. NOT FOR PRODUCT USE
+======================================================
+
+jersey-docker-aws-poc
+=====================
+Sample project to dockerize very simple REST application based on jersey. 
+Later use aws EC2 as a remote docker machine to run the docker image.
+
+
+1. Created maven project from Jersey quick grizzly2 archetype
+
+archetypeArtifactId=jersey-quickstart-grizzly2  
+archetypeVersion=2.26
+
+From <https://yurisubach.com/2016/07/14/jersey-dockerize/> 
+
+In Main.java 
+• updated the ipaddress to 0.0.0.0 so that process listens for all the ip addresses from container.
+• Comment //  server.stop(); so that server will run till container runs
+
+2. Create EC2 docker machine
+
+docker-machine create --amazonec2-instance-type t2.micro  --driver amazonec2 --amazonec2-open-port 8000 --amazonec2-region ap-south-1 --amazonec2-access-key  AKIAJxxxxxxxxx  --amazonec2-secret-key Fafxxxxxxxxx aws-docker-api-sandbox
+=> yellow highlighted port 8000 says, EC2 IAM to open up port for external access
+
+
+3. Run the output of this command to make aws machine as active machine
+C:\Users\naray\workspace\jersey-docker-aws-poc>docker-machine env aws-docker-api-sandbox
+
+
+C:\Users\naray\workspace\jersey-docker-aws-poc>docker-machine ls
+NAME                     ACTIVE   DRIVER      STATE     URL                       SWARM   DOCKER        ERRORS
+aws-docker-api-sandbox   *        amazonec2   Running   tcp://35.154.62.xx:2376           v18.01.0-ce
+=> above yellow highlighted IP address is where docker is running. So access any service in this ip address.
+
+
+C:\Users\naray\workspace\jersey-docker-aws-poc>docker build -t jersey-docker-aws-poc .
+
+docker run -d -p 8000:8080 --name webserver jersey-docker-aws-poc
+CTRL+C to run in background
+
+Docker logs webserver to view logs.
+
+
+http://35.154.62.xx:8000/myapp/myresource
+
+
+
+
+
+
+
+
 CODE PICKER
 ===========
 

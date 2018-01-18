@@ -1,0 +1,89 @@
+<apex:page controller="DroneController"
+	action="{!gotoRelativeCurrentDrone}">
+	<apex:pageBlock>
+		<head>
+
+<script type="text/javascript"
+	src="http://maps.google.com/maps/api/js?key=AIzaSyCjFBy0p0n28RX8PJzvyhYGQYe8UUFnBTo&sensor=false"></script>
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript"> 
+ $j = jQuery.noConflict();
+$j(document).ready(function() {
+  
+  var myOptions = {
+    zoom: 17,
+    mapTypeId: google.maps.MapTypeId.MAP,
+    mapTypeControl: true
+  }
+  
+  var map;
+  var marker;
+  
+  var infowindow = new google.maps.InfoWindow({
+    content: "<b>D1</b>"
+  });
+ 
+        //create map
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
+      
+        //center map
+        map.setCenter({lat: {!lat}, lng: {!lon}});
+        
+        //create marker
+        marker = new google.maps.Marker({
+            position: {lat: {!lat}, lng: {!lon}},
+            map: map,
+            title: "D1",
+            icon: "https://c.eu11.visual.force.com/resource/1494622980000/DroneIcon"
+        });
+        
+        //add listeners
+/*         google.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map,marker);
+        });
+        google.maps.event.addListener(infowindow, 'closeclick', function() {
+          map.setCenter(marker.getPosition()); 
+        });
+         */
+  function resizeIframe() {
+    var me = window.name;
+    if (me) {
+      var iframes = parent.document.getElementsByName(me);
+      if (iframes && iframes.length == 1) {
+        height = document.body.offsetHeight;
+        iframes[0].style.height = height + "px";
+      }
+    }
+  }
+  
+});
+</script>
+
+<style>
+#map {
+	font-family: Arial;
+	font-size: 12px;
+	line-height: normal !important;
+	height: 500px;
+	background: transparent;
+}
+</style>
+
+		</head>
+
+		<body>
+			<div id="map"></div>
+			{!$Resource.DroneIcon}
+			<hr />
+			Latitute: {!lat}
+			<br /> 
+			Logtitude: {!lon}
+			<br />
+			<hr />
+			Response:
+			<br /> {!responseBody}
+
+		</body>
+	</apex:pageBlock>
+</apex:page>
